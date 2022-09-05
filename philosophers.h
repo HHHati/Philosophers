@@ -6,7 +6,7 @@
 /*   By: Bade-lee <bade-lee@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 16:00:41 by Bade-lee          #+#    #+#             */
-/*   Updated: 2022/09/03 18:32:51 by Bade-lee         ###   ########.fr       */
+/*   Updated: 2022/09/03 19:00:17 by Bade-lee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 # include <unistd.h>
 # include <sys/time.h>
+# include <pthread.h>
 
 //          ----------========== {     DEFS     } ==========----------
 
@@ -42,6 +43,7 @@ typedef struct s_philo
 	int				time_sleep;
 	int				eat_max;
 	int				start_time;
+	t_info			*info;
 	pthread_t		**threads;
 	pthread_mutex_t	**mutex;
 }				t_philo;
