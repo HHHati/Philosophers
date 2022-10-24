@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: Bade-lee <bade-lee@student.s19.be>         +#+  +:+       +#+         #
+#    By: bade-lee <bade-lee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/09/03 16:00:45 by Bade-lee          #+#    #+#              #
-#    Updated: 2022/09/03 16:26:44 by Bade-lee         ###   ########.fr        #
+#    Created: 2022/10/24 11:20:30 by bade-lee          #+#    #+#              #
+#    Updated: 2022/10/24 21:25:59 by bade-lee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,12 +15,16 @@
 NAME = philo
 CC = cc
 FLAGS = -Wall -Wextra -Werror
-INCLUDE = -I pipex.h
+INCLUDE = -I philo.h
 
 #          ----------========== {     SRCS     } ==========----------
 
 SRC =\
-		philosophers.c\
+		philo.c\
+		lib.c\
+		init.c\
+		utils.c\
+		tools.c
 
 #          ----------========== {     OBJS     } ==========----------
 
