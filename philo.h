@@ -6,7 +6,7 @@
 /*   By: bade-lee <bade-lee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 11:20:23 by bade-lee          #+#    #+#             */
-/*   Updated: 2022/10/24 21:42:35 by bade-lee         ###   ########.fr       */
+/*   Updated: 2022/10/25 14:08:13 by bade-lee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct l_philo
 	pthread_t		thread;
 	struct l_info	*info;
 	pthread_mutex_t	*fork1;
-	pthread_mutex_t fork2;
+	pthread_mutex_t	fork2;
 }				t_philo;
 
 typedef struct l_info

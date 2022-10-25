@@ -6,7 +6,7 @@
 /*   By: bade-lee <bade-lee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 11:20:28 by bade-lee          #+#    #+#             */
-/*   Updated: 2022/10/24 21:43:33 by bade-lee         ###   ########.fr       */
+/*   Updated: 2022/10/25 14:08:01 by bade-lee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 
 static void	*check_status(void *arg)
 {
-	t_philo *philo;
+	t_philo	*philo;
 
-	philo =(t_philo *)arg;
+	philo = (t_philo *)arg;
 	wait_time(philo->info->time_die + 1, *philo->info);
 	pthread_mutex_lock(&philo->info->mutex_eat);
 	pthread_mutex_lock(&philo->info->mutex_stop);
-	if (!check_death(philo, 0) && get_time() - philo->last_eat >= (long)(philo->info->time_die))
+	if (!check_death(philo, 0)
+		&& get_time() - philo->last_eat >= (long)(philo->info->time_die))
 	{
 		pthread_mutex_unlock(&philo->info->mutex_eat);
 		pthread_mutex_unlock(&philo->info->mutex_stop);
@@ -62,7 +63,7 @@ static void	eat(t_philo *philo)
 
 void	*loop_philo(void *arg)
 {
-	t_philo 	*philo;
+	t_philo		*philo;
 	pthread_t	t;
 
 	philo = (t_philo *)arg;
@@ -91,7 +92,7 @@ void	*loop_philo(void *arg)
 
 int	main(int argc, char **argv)
 {
-	t_info info;
+	t_info	info;
 
 	if (!(argc == 5 || argc == 6))
 	{
@@ -101,7 +102,7 @@ int	main(int argc, char **argv)
 	if (init_info(&info, argv) == 1)
 	{
 		free(info.philo);
-		return(0);
+		return (0);
 	}
 	init_philo(&info);
 	big_free(&info);

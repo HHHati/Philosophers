@@ -6,7 +6,7 @@
 /*   By: bade-lee <bade-lee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 11:41:29 by bade-lee          #+#    #+#             */
-/*   Updated: 2022/10/24 21:42:59 by bade-lee         ###   ########.fr       */
+/*   Updated: 2022/10/25 14:12:27 by bade-lee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ int	init_info(t_info *info, char **argv)
 	info->stop = 0;
 	info->philo = malloc(info->number * sizeof(t_philo));
 	if (!info->philo)
-		return(2);
+		return (2);
 	if (check_args(argv))
 	{
 		write(2, E_ARGS, 32);
-		return(1);
+		return (1);
 	}
 	info->philo_eat = 0;
 	info->number = ft_atoi(argv[1]);
@@ -41,11 +41,11 @@ int	init_info(t_info *info, char **argv)
 
 int	init_philo(t_info *info)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	info->start_time = get_time();
-	while(i < info->number)
+	while (i < info->number)
 	{
 		info->philo[i].number = i;
 		info->philo[i].last_eat = 0;
@@ -57,7 +57,8 @@ int	init_philo(t_info *info)
 			info->philo[i].fork1 = &info->philo[0].fork2;
 		else
 			info->philo[i].fork1 = &info->philo[i + 2].fork2;
-		if (pthread_create(&info->philo[i].thread, NULL, &loop_philo, &(info->philo[i]))!= 0)
+		if (pthread_create(&info->philo[i].thread, NULL, &loop_philo,
+				&(info->philo[i])) != 0)
 			return (-1);
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: bade-lee <bade-lee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 13:23:26 by bade-lee          #+#    #+#             */
-/*   Updated: 2022/10/24 16:07:24 by bade-lee         ###   ########.fr       */
+/*   Updated: 2022/10/25 14:05:01 by bade-lee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,11 @@ void	write_line(t_philo *philo, char *line)
 
 	pthread_mutex_lock(&(philo->info->speak));
 	time = get_time() - philo->info->start_time;
-	if (!philo->info->stop && time >= 0 && time <= INT_MAX && !check_death(philo, 0))
-		printf("%lld   %d %s", get_relative_time(philo->info), philo->number, line);
+	if (!philo->info->stop && time >= 0 && time <= INT_MAX
+		&& !check_death(philo, 0))
+	{
+		printf("%lld   %d %s", get_relative_time(philo->info),
+			philo->number, line);
+	}
 	pthread_mutex_unlock(&(philo->info->speak));
 }

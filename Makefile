@@ -6,7 +6,7 @@
 #    By: bade-lee <bade-lee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/24 11:20:30 by bade-lee          #+#    #+#              #
-#    Updated: 2022/10/24 21:25:59 by bade-lee         ###   ########.fr        #
+#    Updated: 2022/10/25 14:12:57 by bade-lee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 
 NAME = philo
 CC = cc
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror -fsanitize=address
 INCLUDE = -I philo.h
 
 #          ----------========== {     SRCS     } ==========----------

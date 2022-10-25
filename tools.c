@@ -6,7 +6,7 @@
 /*   By: bade-lee <bade-lee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 11:31:48 by bade-lee          #+#    #+#             */
-/*   Updated: 2022/10/24 21:30:36 by bade-lee         ###   ########.fr       */
+/*   Updated: 2022/10/25 14:07:10 by bade-lee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 void	big_free(t_info *info)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(i < info->number)
+	while (i < info->number)
 	{
 		pthread_mutex_destroy(info->philo[i].fork1);
 		pthread_mutex_destroy(&info->philo[i].fork2);
@@ -32,14 +32,14 @@ void	big_free(t_info *info)
 
 int	check_args(char **argv)
 {
-	size_t i;
-	size_t n;
+	size_t	i;
+	size_t	n;
 
 	i = 1;
-	while(argv[i])
+	while (argv[i])
 	{
 		n = 0;
-		while(argv[i][n])
+		while (argv[i][n])
 		{
 			if (!ft_isdigit(argv[i][n]))
 				return (1);
@@ -64,7 +64,7 @@ long long	get_relative_time(t_info *info)
 {
 	struct timeval	tp;
 	int				result;
-	
+
 	gettimeofday(&tp, NULL);
 	result = (tp.tv_sec * 1000) + (tp.tv_usec / 1000);
 	result -= info->start_time;
