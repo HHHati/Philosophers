@@ -6,7 +6,7 @@
 /*   By: bade-lee <bade-lee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 11:20:23 by bade-lee          #+#    #+#             */
-/*   Updated: 2022/10/25 14:08:13 by bade-lee         ###   ########.fr       */
+/*   Updated: 2022/10/27 13:59:51 by bade-lee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 //          ----------========== {     DEFS     } ==========----------
 
 # define E_ARGS "philosophers: invalid arguments\n"
+# define E_ARGS_SIZE 33
 
 # define MSG_FORK "has taken a fork\n"
 # define MSG_EAT "is eating\n"
@@ -34,46 +35,36 @@
 
 //          ----------========== {    STRUCT    } ==========----------
 
-typedef struct l_philo
+typedef struct s_info
 {
+	long long		start_time;
+	int				i;
 	int				number;
-	int				mutex_count;
-	long int		last_eat;
-	pthread_t		thread;
-	struct l_info	*info;
-	pthread_mutex_t	*fork1;
-	pthread_mutex_t	fork2;
-}				t_philo;
-
-typedef struct l_info
-{
-	int				number;
-	int				time_die;
 	int				time_eat;
 	int				time_sleep;
-	int				eat_max;
-	int				philo_eat;
-	int				stop;
-	long int		start_time;
-	t_philo			*philo;
-	pthread_mutex_t	speak;
-	pthread_mutex_t	mutex_stop;
-	pthread_mutex_t	mutex_eat;
-	pthread_mutex_t	mutex_died;
+	int				time_death;
+	int				max_eat;
+	int				dead;
+	int				*times_eat;
+	long long		*last_eat;
+	pthread_t		*philo;
+	pthread_t		monitor;
+	pthread_mutex_t *fork;
+	pthread_mutex_t lock;
 }				t_info;
 
 //          ----------========== {     FCTS     } ==========----------
 
-int			init_info(t_info *info, char **argv);
-int			init_philo(t_info *info);
-void		*loop_philo(void *arg);
-int			check_death(t_philo *philo, int n);
-void		write_line(t_philo *philo, char *line);
-void		big_free(t_info *info);
-int			check_args(char **argv);
+void		init_info(t_info *info, int argc, char **argv);
+void		take_fork(t_info *info, int philo);
+void		eat(t_info *info, int philo);
+void		let_fork(t_info *info, int philo);
+void		sleeping(t_info *info, int philo);
+int			check_status(t_info *info);
+void		write_line(t_info *info, int philo, char *line);
 long long	get_time(void);
 long long	get_relative_time(t_info *info);
-void		wait_time(int time, t_info info);
+void		wait_time(int time, t_info *info);
 int			ft_isdigit(int c);
 int			ft_atoi(const char *str);
 

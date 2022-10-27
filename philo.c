@@ -6,104 +6,111 @@
 /*   By: bade-lee <bade-lee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 11:20:28 by bade-lee          #+#    #+#             */
-/*   Updated: 2022/10/25 14:08:01 by bade-lee         ###   ########.fr       */
+/*   Updated: 2022/10/27 14:51:47 by bade-lee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	*check_status(void *arg)
+static void	*philo_loop(void *args)
 {
-	t_philo	*philo;
+	t_info		*info;
+	static int	number;
+	int			new_number;
 
-	philo = (t_philo *)arg;
-	wait_time(philo->info->time_die + 1, *philo->info);
-	pthread_mutex_lock(&philo->info->mutex_eat);
-	pthread_mutex_lock(&philo->info->mutex_stop);
-	if (!check_death(philo, 0)
-		&& get_time() - philo->last_eat >= (long)(philo->info->time_die))
+	info = (t_info *)args;
+	pthread_mutex_lock(&info->lock);
+	number += 1;
+	new_number = number;
+	pthread_mutex_unlock(&info->lock);
+	if ((new_number % 2) == 1)
+		wait_time(info->time_eat / 2, info);
+	while (!check_status(info))
 	{
-		pthread_mutex_unlock(&philo->info->mutex_eat);
-		pthread_mutex_unlock(&philo->info->mutex_stop);
-		write_line(philo, "died\n");
-		check_death(philo, 1);
+		take_fork(info, new_number);
+		eat(info, new_number);
+		let_fork(info, new_number);
+		sleeping(info, new_number);
 	}
-	pthread_mutex_unlock(&philo->info->mutex_eat);
-	pthread_mutex_unlock(&philo->info->mutex_stop);
 	return (0);
 }
 
-static void	take_fork(t_philo *philo)
+static void	*monitor(void *args)
 {
-	pthread_mutex_lock(&(philo->fork2));
-	write_line(philo, MSG_FORK);
-	if (philo->info->number == 1)
+	t_info		*info;
+	int			i;
+
+	info = (t_info *)args;
+	while (1 == 1)
 	{
-		wait_time(philo->info->time_die * 2, *philo->info);
-		return ;
-	}
-	pthread_mutex_lock(philo->fork1);
-	write_line(philo, MSG_FORK);
-}
-
-static void	eat(t_philo *philo)
-{
-	write_line(philo, MSG_EAT);
-	pthread_mutex_lock(&(philo->info->mutex_eat));
-	philo->last_eat = get_time();
-	philo->mutex_count++;
-	pthread_mutex_unlock(&(philo->info->mutex_eat));
-	wait_time(philo->info->time_eat, *philo->info);
-	pthread_mutex_unlock((philo->fork1));
-	pthread_mutex_unlock(&(philo->fork2));
-	write_line(philo, MSG_SLEEP);
-	wait_time(philo->info->time_sleep, *philo->info);
-	write_line(philo, MSG_THINK);
-}
-
-void	*loop_philo(void *arg)
-{
-	t_philo		*philo;
-	pthread_t	t;
-
-	philo = (t_philo *)arg;
-	if (philo->number % 2 == 0)
-		wait_time(philo->info->time_eat / 10, *philo->info);
-	while (!check_death(philo, 0))
-	{
-		pthread_create(&t, NULL, check_status, arg);
-		take_fork(philo);
-		eat(philo);
-		pthread_detach(t);
-		if (philo->mutex_count == philo->info->eat_max)
+		i = 0;
+		while (i < info->number)
 		{
-			pthread_mutex_lock(&philo->info->mutex_stop);
-			if (++philo->info->philo_eat == philo->info->number)
+			pthread_mutex_lock(&info->lock);
+			if(info->time_death < (get_time() - info->last_eat[i]))
 			{
-				pthread_mutex_unlock(&philo->info->mutex_stop);
-				check_death(philo, 2);
+				info->dead = 1;
+				printf("%lli    %i   %s", get_relative_time(info), i + 1, MSG_DIED);
 			}
-			pthread_mutex_unlock(&philo->info->mutex_stop);
-			return (0);
+			pthread_mutex_unlock(&info->lock);
+			if (check_status(info))
+				return (NULL);
+			i++;
 		}
 	}
-	return (0);
+	return (NULL);
+}
+
+static int	check_args(int argc, char **argv)
+{
+	int i;
+	int n;
+
+	i = 1;
+	if (argc != 5 && argc != 6)
+	{
+		write(2, E_ARGS, E_ARGS_SIZE);
+		return (0);
+	}
+	while (argv[i])
+	{
+		n = 0;
+		while (argv[i][n])
+		{
+			if (!ft_isdigit(argv[i][n]))
+			{
+				write(2, E_ARGS, E_ARGS_SIZE);
+				return (0);
+			}
+			n++;
+		}
+		i++;
+	}
+	return (1);
 }
 
 int	main(int argc, char **argv)
 {
 	t_info	info;
 
-	if (!(argc == 5 || argc == 6))
+	if (!check_args(argc, argv))
+		return (1);
+	init_info(&info, argc, argv);
+	pthread_create(&info.monitor, NULL, &monitor, (void *)&info);
+	info.i = 0;
+	while (info.i < info.number)
 	{
-		write(2, E_ARGS, 32);
-		return (0);
+		pthread_create(&info.philo[info.i], NULL, &philo_loop, (void *)&info);
+		info.i++;
 	}
-	if (init_info(&info, argv) == 1)
+	info.i = 0;
+	while (info.i < info.number)
 	{
-		free(info.philo);
-		return (0);
+		pthread_join(info.philo[info.i], NULL);
+		pthread_mutex_destroy(&info.fork[info.i]);
+		info.i++;
 	}
-	init_philo(&info);
-	big_free(&info);
+	pthread_join(info.monitor, NULL);
+	pthread_mutex_destroy(&info.lock);
+	return (0);
 }

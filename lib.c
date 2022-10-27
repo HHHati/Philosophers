@@ -6,7 +6,7 @@
 /*   By: bade-lee <bade-lee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 11:20:35 by bade-lee          #+#    #+#             */
-/*   Updated: 2022/10/25 14:07:48 by bade-lee         ###   ########.fr       */
+/*   Updated: 2022/10/27 14:08:58 by bade-lee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	ft_isdigit(int c)
 
 static int	ft_iswhitespace(char c)
 {
-	if (c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\v'
+	while (c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\v'
 		|| c == '\f')
 		return (1);
 	return (0);
