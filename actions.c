@@ -6,7 +6,7 @@
 /*   By: bade-lee <bade-lee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:28:36 by bade-lee          #+#    #+#             */
-/*   Updated: 2022/10/27 13:15:22 by bade-lee         ###   ########.fr       */
+/*   Updated: 2022/10/27 21:42:41 by bade-lee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,16 @@
 
 void	take_fork(t_info *info, int philo)
 {
-	pthread_mutex_lock(&info->fork[(philo - 1)]);
+	pthread_mutex_lock(&info->fork[(philo)]);
 	write_line(info, philo, MSG_FORK);
-	if (philo == info->number)
-		pthread_mutex_lock(&info->fork[0]);
-	else
-		pthread_mutex_lock(&info->fork[philo]);
-	write_line(info, philo, MSG_FORK);
+	if (info->number != 1)
+	{
+		if (philo == info->number)
+			pthread_mutex_lock(&info->fork[0]);
+		else
+			pthread_mutex_lock(&info->fork[philo + 1]);
+		write_line(info, philo, MSG_FORK);
+	}
 }
 
 void	eat(t_info *info, int philo)
@@ -36,11 +39,14 @@ void	eat(t_info *info, int philo)
 
 void	let_fork(t_info *info, int philo)
 {
-	pthread_mutex_unlock(&info->fork[(philo - 1)]);
-	if (philo == info->number)
-		pthread_mutex_unlock(&info->fork[0]);
-	else
-		pthread_mutex_unlock(&info->fork[philo]);
+	pthread_mutex_unlock(&info->fork[(philo)]);
+	if (info->number != 1)
+	{
+		if (philo == info->number)
+			pthread_mutex_unlock(&info->fork[0]);
+		else
+			pthread_mutex_unlock(&info->fork[philo + 1]);
+	}
 }
 
 void	sleeping(t_info *info, int philo)

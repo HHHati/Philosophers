@@ -6,7 +6,7 @@
 /*   By: bade-lee <bade-lee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:04:21 by bade-lee          #+#    #+#             */
-/*   Updated: 2022/10/27 13:13:30 by bade-lee         ###   ########.fr       */
+/*   Updated: 2022/10/27 21:26:37 by bade-lee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	write_line(t_info *info, int philo, char *line)
 	pthread_mutex_lock(&info->lock);
 	time = get_time() - info->start_time;
 	if (!info->dead && time >= 0 && time <= INT_MAX)
-		printf("%lli    %i  %s", time, philo, line);
+		printf("%lli    %i %s", time, philo, line);
 	pthread_mutex_unlock(&info->lock);
 }
 

@@ -6,7 +6,7 @@
 /*   By: bade-lee <bade-lee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 11:20:28 by bade-lee          #+#    #+#             */
-/*   Updated: 2022/10/27 20:22:48 by bade-lee         ###   ########.fr       */
+/*   Updated: 2022/10/27 21:45:54 by bade-lee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,12 @@ static void	*philo_loop(void *args)
 	pthread_mutex_unlock(&info->lock);
 	if ((new_number % 2) == 1)
 		wait_time(info->time_eat / 2, info);
+	if (info->number == 1)
+	{
+		take_fork(info, new_number);
+		wait_time(info->time_death, info);
+		let_fork(info, new_number);
+	}
 	while (!check_status(info))
 	{
 		take_fork(info, new_number);
@@ -50,15 +56,15 @@ static void	*monitor(void *args)
 			if(info->time_death <= (get_time() - info->last_eat[i]))
 			{
 				info->dead = 1;
-				printf("%lli    %i   %s", get_relative_time(info), i + 1, MSG_DIED);
+				printf("%lli    %i %s", get_relative_time(info), i + 1, MSG_DIED);
 			}
 			pthread_mutex_unlock(&info->lock);
 			if (check_status(info))
-				return (NULL);
+				return (0);
 			i++;
 		}
 	}
-	return (NULL);
+	return (0);
 }
 
 static int	check_args(int argc, char **argv)
