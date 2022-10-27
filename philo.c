@@ -6,7 +6,7 @@
 /*   By: bade-lee <bade-lee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 11:20:28 by bade-lee          #+#    #+#             */
-/*   Updated: 2022/10/27 14:51:47 by bade-lee         ###   ########.fr       */
+/*   Updated: 2022/10/27 20:22:48 by bade-lee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void	*monitor(void *args)
 		while (i < info->number)
 		{
 			pthread_mutex_lock(&info->lock);
-			if(info->time_death < (get_time() - info->last_eat[i]))
+			if(info->time_death <= (get_time() - info->last_eat[i]))
 			{
 				info->dead = 1;
 				printf("%lli    %i   %s", get_relative_time(info), i + 1, MSG_DIED);
