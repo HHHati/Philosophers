@@ -6,7 +6,7 @@
 /*   By: bade-lee <bade-lee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 11:20:28 by bade-lee          #+#    #+#             */
-/*   Updated: 2022/10/27 21:45:54 by bade-lee         ###   ########.fr       */
+/*   Updated: 2022/10/28 10:22:19 by bade-lee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	*philo_loop(void *args)
 	return (0);
 }
 
-static void	*monitor(void *args)
+static void	*check_loop(void *args)
 {
 	t_info		*info;
 	int			i;
@@ -53,10 +53,11 @@ static void	*monitor(void *args)
 		while (i < info->number)
 		{
 			pthread_mutex_lock(&info->lock);
-			if(info->time_death <= (get_time() - info->last_eat[i]))
+			if (info->time_death <= (get_time() - info->last_eat[i]))
 			{
 				info->dead = 1;
-				printf("%lli    %i %s", get_relative_time(info), i + 1, MSG_DIED);
+				printf("%lli    %i %s", get_relative_time(info), i + 1,
+					MSG_DIED);
 			}
 			pthread_mutex_unlock(&info->lock);
 			if (check_status(info))
@@ -69,8 +70,8 @@ static void	*monitor(void *args)
 
 static int	check_args(int argc, char **argv)
 {
-	int i;
-	int n;
+	int	i;
+	int	n;
 
 	i = 1;
 	if (argc != 5 && argc != 6)
@@ -102,7 +103,7 @@ int	main(int argc, char **argv)
 	if (!check_args(argc, argv))
 		return (1);
 	init_info(&info, argc, argv);
-	pthread_create(&info.monitor, NULL, &monitor, (void *)&info);
+	pthread_create(&info.check, NULL, &check_loop, (void *)&info);
 	info.i = 0;
 	while (info.i < info.number)
 	{
@@ -116,7 +117,7 @@ int	main(int argc, char **argv)
 		pthread_mutex_destroy(&info.fork[info.i]);
 		info.i++;
 	}
-	pthread_join(info.monitor, NULL);
+	pthread_join(info.check, NULL);
 	pthread_mutex_destroy(&info.lock);
 	return (0);
 }

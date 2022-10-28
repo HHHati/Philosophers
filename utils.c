@@ -6,7 +6,7 @@
 /*   By: bade-lee <bade-lee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:04:21 by bade-lee          #+#    #+#             */
-/*   Updated: 2022/10/27 21:26:37 by bade-lee         ###   ########.fr       */
+/*   Updated: 2022/10/28 10:23:04 by bade-lee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	check_status(t_info *info)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	pthread_mutex_lock(&info->lock);
@@ -28,7 +28,7 @@ int	check_status(t_info *info)
 		if (info->times_eat[i] < info->max_eat || info->max_eat == -1)
 		{
 			pthread_mutex_unlock(&info->lock);
-			return(0);
+			return (0);
 		}
 		i++;
 	}
@@ -38,7 +38,7 @@ int	check_status(t_info *info)
 
 void	write_line(t_info *info, int philo, char *line)
 {
-	long long time;
+	long long	time;
 
 	if (check_status(info))
 		return ;

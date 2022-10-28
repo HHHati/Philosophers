@@ -6,7 +6,7 @@
 /*   By: bade-lee <bade-lee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:18:44 by bade-lee          #+#    #+#             */
-/*   Updated: 2022/10/27 14:43:09 by bade-lee         ###   ########.fr       */
+/*   Updated: 2022/10/28 10:21:26 by bade-lee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ void	init_info(t_info *info, int argc, char **argv)
 	info->last_eat = malloc(info->number * sizeof(long long));
 	info->times_eat = malloc(info->number * sizeof(int));
 	info->philo = (pthread_t *)malloc(info->number * sizeof(pthread_t));
-	info->fork = (pthread_mutex_t *)malloc(info->number * sizeof(pthread_mutex_t));
+	info->fork = (pthread_mutex_t *)malloc(info->number
+			* sizeof(pthread_mutex_t));
 	pthread_mutex_init(&info->lock, NULL);
 	while (info->i < info->number)
 	{

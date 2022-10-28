@@ -6,7 +6,7 @@
 /*   By: bade-lee <bade-lee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 11:20:23 by bade-lee          #+#    #+#             */
-/*   Updated: 2022/10/27 13:59:51 by bade-lee         ###   ########.fr       */
+/*   Updated: 2022/10/28 10:22:44 by bade-lee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ typedef struct s_info
 	int				*times_eat;
 	long long		*last_eat;
 	pthread_t		*philo;
-	pthread_t		monitor;
-	pthread_mutex_t *fork;
-	pthread_mutex_t lock;
+	pthread_t		check;
+	pthread_mutex_t	*fork;
+	pthread_mutex_t	lock;
 }				t_info;
 
 //          ----------========== {     FCTS     } ==========----------
