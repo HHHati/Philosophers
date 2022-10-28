@@ -6,7 +6,7 @@
 /*   By: bade-lee <bade-lee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 11:20:28 by bade-lee          #+#    #+#             */
-/*   Updated: 2022/10/28 10:22:19 by bade-lee         ###   ########.fr       */
+/*   Updated: 2022/10/28 11:42:17 by bade-lee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static int	check_args(int argc, char **argv)
 	int	n;
 
 	i = 1;
-	if (argc != 5 && argc != 6)
+	if ((argc != 5 && argc != 6) || ft_atoi(argv[1]) == 0)
 	{
 		write(2, E_ARGS, E_ARGS_SIZE);
 		return (0);
