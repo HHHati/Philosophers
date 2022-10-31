@@ -6,21 +6,23 @@
 /*   By: bade-lee <bade-lee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:18:44 by bade-lee          #+#    #+#             */
-/*   Updated: 2022/10/28 11:42:56 by bade-lee         ###   ########.fr       */
+/*   Updated: 2022/10/31 11:16:44 by bade-lee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	init_info_2(t_info *info)
+static void	init_info_3(t_info *info)
 {
-	info->last_eat = malloc(info->number * sizeof(long long));
-	info->times_eat = malloc(info->number * sizeof(int));
-	info->philo = (pthread_t *)malloc(info->number * sizeof(pthread_t));
 	info->fork = (pthread_mutex_t *)malloc(info->number
 			* sizeof(pthread_mutex_t));
-	if (!info->last_eat || !info->times_eat || !info->philo || !info->fork)
+	if (!info->fork)
+	{
+		free(info->last_eat);
+		free(info->times_eat);
+		free(info->philo);
 		return ;
+	}
 	pthread_mutex_init(&info->lock, NULL);
 	while (info->i < info->number)
 	{
@@ -30,6 +32,27 @@ void	init_info_2(t_info *info)
 		info->i++;
 	}
 	pthread_mutex_init(&info->fork[info->i], NULL);
+}
+
+static void	init_info_2(t_info *info)
+{
+	info->last_eat = malloc(info->number * sizeof(long long));
+	if (!info->last_eat)
+		return ;
+	info->times_eat = malloc(info->number * sizeof(int));
+	if (!info->times_eat)
+	{
+		free(info->last_eat);
+		return ;
+	}
+	info->philo = (pthread_t *)malloc(info->number * sizeof(pthread_t));
+	if (!info->philo)
+	{
+		free(info->last_eat);
+		free(info->times_eat);
+		return ;
+	}
+	init_info_3(info);
 }
 
 void	init_info(t_info *info, int argc, char **argv)
