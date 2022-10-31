@@ -6,7 +6,7 @@
 /*   By: bade-lee <bade-lee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 11:20:23 by bade-lee          #+#    #+#             */
-/*   Updated: 2022/10/28 10:22:44 by bade-lee         ###   ########.fr       */
+/*   Updated: 2022/10/31 13:04:39 by bade-lee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@
 
 # define MSG_FORK "has taken a fork\n"
 # define MSG_EAT "is eating\n"
-# define MSG_THINK "is sleeping\n"
-# define MSG_SLEEP "is thinking\n"
+# define MSG_THINK "is thinking\n"
+# define MSG_SLEEP "is sleeping\n"
 # define MSG_DIED "died\n"
 
 //          ----------========== {    STRUCT    } ==========----------
